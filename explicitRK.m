@@ -1,4 +1,5 @@
 function [h, ts, ys] = explicitRK(f, y0, t0, t_f,N, A, b)
+    b = reshape(b, 1, length(b));
     c = sum(A,2);
     h=(t_f-t0)/N;
     ts = linspace(0, t_f, N+1);
