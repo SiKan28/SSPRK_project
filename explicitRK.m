@@ -6,7 +6,6 @@ function [h, ts, ys] = explicitRK(f, y0, t0, t_f,N, A, b)
     ys = zeros(length(y0),N+1);
     ys(:,1) = y0;
     for j=1:N
-        %bk = zeros()
         K = zeros(length(y0), length(c));
         for i = 1:length(c)
             K(:,i) = f(ts(j)+h*c(i), ys(:,j)+h*K*A(i,:)');

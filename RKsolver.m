@@ -16,10 +16,22 @@ function [h, ts, ys] = RKsolver(f, y0, t_0, t_f, N, method)
             b = [0.5, 0.5];
             [h, ts, ys] = explicitRK(f, y0, t_0, t_f, N, A, b);
             return
+        case 'SSPRK22'      % C = 1/2
+            A = [0, 0
+                 1, 0];
+            b = [1/2, 1/2];
+            [h, ts, ys] = explicitRK(f, y0, t_0, t_f, N, A, b);
+            return
         case 'ralston'
             A = [0, 0
                  2/3, 0];
             b = [1/4, 3/4];
+            [h, ts, ys] = explicitRK(f, y0, t_0, t_f, N, A, b);
+            return
+        case 'twoStepTest'
+            A = [0, 0;
+                 -20, 0];
+            b = [41/40, -1/40];
             [h, ts, ys] = explicitRK(f, y0, t_0, t_f, N, A, b);
             return
     % three-step methods
@@ -51,7 +63,7 @@ function [h, ts, ys] = RKsolver(f, y0, t_0, t_f, N, method)
             b = [1/4, 0, 3/4];
             [h, ts, ys] = explicitRK(f, y0, t_0, t_f, N, A, b);
             return
-        case 'SSPRK3'
+        case 'SSPRK33'      % C = 1/3
             A = [0, 0, 0;
                  1, 0, 0;
                  1/4, 1/4, 0];
@@ -84,6 +96,18 @@ function [h, ts, ys] = RKsolver(f, y0, t_0, t_f, N, method)
             [h, ts, ys] = explicitRK(f, y0, t_0, t_f, N, A, b);
             return
     % five-step methods
+        case 'SSPRK53'      % C = 0.53
+            % alpha = [0, 0, 0, 0, 0; 1, 0, 0, 0, 0; 0, 1, 0, 0, 0; 0.5666, 0, 0.4334, 0, 0; 0.0930, 0.00002, 0, 0.907, 0; 0.007, 0.2013, 0.0018, 0, 0.79];
+            % beta = [0, 0, 0, 0, 0; 0.3773, 0, 0, 0, 0; 0, 0.3773, 0, 0, 0; 0, 0, 0.1635, 0, 0; 0.0007, 0, 0, 0.3422, 0; 0.0028, 0.00002, 0, 0, 0.2979];
+            A = [0, 0, 0, 0, 0;
+                 0.3773, 0, 0, 0, 0;
+                 0.3773, 0.3773, 0, 0, 0;
+                 0.1635, 0.1635, 0.1635, 0, 0;
+                 0.1490, 0.1483, 0.1483, 0.3422, 0];
+            b = [0.1972, 0.1179, 0.1172, 0.2703, 0.2979];
+            [h, ts, ys] = explicitRK(f, y0, t_0, t_f, N, A, b);
+            return
+
     % six-step methods
     % seven-step methods
         case 'SSPRK75'      % CFL coefficient:1.178508348471858
